@@ -1,6 +1,8 @@
 package org.machinestalk.service;
+import org.machinestalk.api.dto.UserDto;
 import org.machinestalk.api.dto.UserRegistrationDto;
 import org.machinestalk.domain.User;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
@@ -14,7 +16,7 @@ public interface UserService {
    * @param userRegistrationDto dto for user registration.
    * @return user entity.
    */
-  User registerUser(@NotNull @Valid UserRegistrationDto userRegistrationDto);
+  UserDto registerUser(@NotNull @Valid UserRegistrationDto userRegistrationDto);
 
   /**
    * Get user by its id.
@@ -22,5 +24,5 @@ public interface UserService {
    * @param id user id.
    * @return user entity.
    */
-  Mono<User> getById(long id);
+  Mono<UserDto> getById(long id);
 }

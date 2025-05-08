@@ -18,13 +18,11 @@ public class UserApiImpl implements UserApi {
 
     @Override
     public UserDto register(final UserRegistrationDto userRegistrationDto) {
-        // implement me !!
-        return null;
+        return userService.registerUser(userRegistrationDto);
     }
 
     @Override
     public Mono<UserDto> findUserById(long id) {
-        // implement me !!
-        return null;
+        return userService.getById(id);
     }
 }

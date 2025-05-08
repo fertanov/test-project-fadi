@@ -3,6 +3,7 @@ package org.machinestalk.service.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.machinestalk.api.dto.AddressDto;
+import org.machinestalk.api.dto.UserDto;
 import org.machinestalk.api.dto.UserRegistrationDto;
 import org.machinestalk.domain.Address;
 import org.machinestalk.domain.Department;
@@ -12,6 +13,7 @@ import org.machinestalk.service.UserService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 import reactor.test.StepVerifier;
 
 import java.util.Optional;
@@ -26,7 +28,9 @@ class UserServiceImplTest {
 
   @Mock private UserRepository userRepository;
 
-  @InjectMocks private UserService userService;
+  @Mock private ModelMapper modelMapper;
+
+  @Mock private UserService userService;
 
   @BeforeEach
   void setUp() {
@@ -37,7 +41,7 @@ class UserServiceImplTest {
   void Should_RegisterNewUser_When_RegisterUser() {
     // Given
     final AddressDto addressDto = new AddressDto();
-    addressDto.setStreetName("20");
+    addressDto.setStreetNumber("20");
     addressDto.setStreetName("Rue de Voltaire");
     addressDto.setPostalCode("75015");
     addressDto.setCity("Paris");
@@ -58,6 +62,7 @@ class UserServiceImplTest {
     address.setCity(userRegistrationDto.getPrincipalAddress().getCity());
     address.setCountry(userRegistrationDto.getPrincipalAddress().getCountry());
     final User user = new User();
+    user.setId(123L);
     user.setFirstName(userRegistrationDto.getFirstName());
     user.setLastName(userRegistrationDto.getLastName());
     user.setDepartment(department);
@@ -66,13 +71,13 @@ class UserServiceImplTest {
     when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
 
     // When
-    final User result = userService.registerUser(userRegistrationDto);
+    final UserDto result = userService.registerUser(userRegistrationDto);
 
     // Then
     assertNotNull(result);
     verify(userRepository, times(1)).save(any(User.class));
     assertNotNull(result.getId());
-    user.setId(result.getId());
+    user.setId(Long.valueOf(result.getId()));
     assertEquals(user, result);
   }
 

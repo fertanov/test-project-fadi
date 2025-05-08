@@ -7,7 +7,7 @@ public class AddressDto {
 
   private String streetNumber;
 
-  String streetName;
+  private String streetName;
 
   @NotEmpty
   @Size(max = 40)
